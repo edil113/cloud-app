@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Облачный каталог</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 860px; margin: 30px auto; padding: 0 16px; }
+    form { background: #f3f5f7; padding: 16px; border-radius: 8px; }
+    input, textarea { width: 100%; margin: 6px 0 12px; padding: 8px; box-sizing: border-box; }
+    table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+    th, td { border-bottom: 1px solid #ddd; padding: 8px; text-align: left; }
+    .host { color: #777; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <h1>Облачный каталог — Мұқанов, v2</h1>
+  <p>Вариант 3: Список студентов группы</p>
+  <p class="host">Запрос обработал контейнер: {{ host }}</p>
+
+  <form action="/add" method="post" enctype="multipart/form-data">
+    <label>ФИО студента *</label>
+    <input name="title" required>
+    <label>Группа</label>
+    <input name="group">
+    <label>Описание</label>
+    <textarea name="description" rows="3"></textarea>
+    <label>Фото студента (до 10 МБ)</label>
+    <input type="file" name="file">
+    <button type="submit">Добавить</button>
+  </form>
+
+  <h2>Записи ({{ items|length }})</h2>
+  <table>
+    <tr><th>Дата (UTC)</th><th>ФИО</th><th>Группа</th><th>Описание</th><th>Фото</th></tr>
+    {% for it in items %}
+    <tr>
+      <td>{{ it.created_at }}</td>
+      <td>{{ it.title }}</td>
+      <td>{{ it.group }}</td>
+      <td>{{ it.description }}</td>
+      <td>{% if it.file_key %}<a href="/file/{{ it.id }}">{{ it.file_name }}</a>{% else %}—{% endif %}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5">Записей пока нет</td></tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
